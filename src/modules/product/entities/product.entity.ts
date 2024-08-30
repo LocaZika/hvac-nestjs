@@ -1,3 +1,4 @@
+import { getCurrentDate } from 'src/utils/date.utils';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ schema: 'products', name: 'cars' })
@@ -14,13 +15,13 @@ export class Product {
   @Column({ type: 'numeric', precision: 10, scale: 2 })
   price: number;
 
-  @Column({ type: 'varchar', length: 6 })
-  transmission: 'auto' | 'manual';
+  @Column({ type: 'enum', enum: ['auto', 'manual', 'mixed'] })
+  transmission: 'auto' | 'manual' | 'mixed';
 
-  @Column({ type: 'varchar', length: 4 })
+  @Column({ type: 'enum', enum: ['sale', 'rent'] })
   tradeType: 'sale' | 'rent';
 
-  @Column({ type: 'varchar', length: 10 })
+  @Column({ type: 'enum', enum: ['gasoline', 'electric', 'mixed'] })
   fuelType: 'gasoline' | 'electric';
 
   @Column({ type: 'varchar', length: 10 })
@@ -34,4 +35,7 @@ export class Product {
 
   @Column({ type: 'smallint' })
   mileage: number;
+
+  @Column({ type: 'date', default: getCurrentDate() })
+  created_at: Date;
 }
