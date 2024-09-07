@@ -6,6 +6,7 @@ import { ProductModule } from './modules/product/product.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { LayoutModule } from './modules/layout/layout.module';
+import { HomePageModule } from './modules/homepage/homepage.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { LayoutModule } from './modules/layout/layout.module';
     }),
     DatabaseModule,
     LayoutModule,
+    HomePageModule,
     ProductModule,
     CustomerModule,
   ],
