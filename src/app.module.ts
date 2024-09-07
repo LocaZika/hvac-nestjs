@@ -7,6 +7,7 @@ import { DatabaseModule } from './modules/database/database.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { LayoutModule } from './modules/layout/layout.module';
 import { HomePageModule } from './modules/homepage/homepage.module';
+import { CarPageModule } from './modules/carpage/carpage.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { HomePageModule } from './modules/homepage/homepage.module';
     DatabaseModule,
     LayoutModule,
     HomePageModule,
+    CarPageModule,
     ProductModule,
     CustomerModule,
   ],
