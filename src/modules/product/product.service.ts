@@ -14,7 +14,23 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
   async findAll(): Promise<ResponseData<Product[]>> {
-    const products = await this.productRepository.findAndCount({ take: 9 });
+    const products = await this.productRepository.findAndCount({
+      select: [
+        'id',
+        'name',
+        'brand',
+        'price',
+        'tradeType',
+        'fuelType',
+        'hp',
+        'mileage',
+        'transmission',
+        'type',
+        'model',
+        'imgs',
+      ],
+      take: 9,
+    });
     return {
       page: 1,
       totalPages: calTotalPages(products[1], 9),
@@ -25,14 +41,30 @@ export class ProductService {
   }
 
   async findOne(id: number): Promise<ResponseData<Product>> {
-    const product = await this.productRepository.findOneBy({ id });
+    const product = await this.productRepository.findOne({
+      where: { id },
+      select: [
+        'id',
+        'name',
+        'brand',
+        'price',
+        'tradeType',
+        'fuelType',
+        'hp',
+        'mileage',
+        'transmission',
+        'type',
+        'model',
+        'imgs',
+        'detailImgs',
+      ],
+    });
     if (!product) {
       throw new NotFoundException('Product not found!');
     }
     return {
       statusCode: 200,
       ok: true,
-      message: 'Product was created successfully!',
       data: product,
     };
   }

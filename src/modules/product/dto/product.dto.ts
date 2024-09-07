@@ -23,13 +23,13 @@ export class ProductDto {
   price: number;
 
   @IsEnum(TransmissionEnum)
-  transmission: 'auto' | 'manual' | 'mixed';
+  transmission: TransmissionEnum;
 
   @IsEnum(TradeTypeEnum)
-  tradeType: 'sale' | 'rent';
+  tradeType: TradeTypeEnum;
 
   @IsEnum(FuelTypeEnum)
-  fuelType: 'gasoline' | 'electric';
+  fuelType: FuelTypeEnum;
 
   @IsString({ message: "Product's type must be a string!" })
   type: string;

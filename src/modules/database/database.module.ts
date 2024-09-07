@@ -17,7 +17,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           username: configService.get<string>('DB_USERNAME'),
           password: configService.get<string>('DB_PASSWORD'),
           database: configService.get<string>('DB_NAME'),
-          entities: [__dirname + '/../**/entities/*.entity.ts'],
+          entities: [__dirname + '/../**/entities/*.entity.{ts,js}'],
           autoLoadEntities: true,
           synchronize:
             configService.get<string>('DB_HOST') === 'localhost' ? true : false,

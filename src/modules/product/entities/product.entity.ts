@@ -1,7 +1,12 @@
 import { getCurrentDate } from 'src/utils/date.utils';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  FuelTypeEnum,
+  TradeTypeEnum,
+  TransmissionEnum,
+} from '../types/product.enum';
 
-@Entity({ schema: 'products', name: 'cars' })
+@Entity({ schema: 'products', name: 'cars', synchronize: false })
 export class Product {
   @PrimaryColumn({ type: 'smallint' })
   id: number;
@@ -15,14 +20,14 @@ export class Product {
   @Column({ type: 'numeric', precision: 10, scale: 2 })
   price: number;
 
-  @Column({ type: 'enum', enum: ['auto', 'manual', 'mixed'] })
-  transmission: 'auto' | 'manual' | 'mixed';
+  @Column({ type: 'enum', enum: TransmissionEnum })
+  transmission: TransmissionEnum;
 
-  @Column({ type: 'enum', enum: ['sale', 'rent'] })
-  tradeType: 'sale' | 'rent';
+  @Column({ type: 'enum', enum: TradeTypeEnum })
+  tradeType: TradeTypeEnum;
 
-  @Column({ type: 'enum', enum: ['gasoline', 'electric', 'mixed'] })
-  fuelType: 'gasoline' | 'electric';
+  @Column({ type: 'enum', enum: FuelTypeEnum })
+  fuelType: FuelTypeEnum;
 
   @Column({ type: 'varchar', length: 10 })
   type: string;
@@ -35,6 +40,12 @@ export class Product {
 
   @Column({ type: 'smallint' })
   mileage: number;
+
+  @Column({ type: 'jsonb' })
+  imgs: JSON;
+
+  @Column({ type: 'jsonb' })
+  detailImgs: JSON;
 
   @Column({ type: 'date', default: getCurrentDate() })
   created_at: Date;
