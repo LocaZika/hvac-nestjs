@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ProductModule } from './modules/product/product.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { CustomerModule } from './modules/customer/customer.module';
+import { LayoutModule } from './modules/layout/layout.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { CustomerModule } from './modules/customer/customer.module';
       envFilePath: `.env.${process.env.NODE_ENV.trim()}`,
     }),
     DatabaseModule,
+    LayoutModule,
     ProductModule,
     CustomerModule,
   ],
