@@ -9,6 +9,7 @@ import { LayoutModule } from './modules/layout/layout.module';
 import { HomePageModule } from './modules/homepage/homepage.module';
 import { CarPageModule } from './modules/carpage/carpage.module';
 import { AboutPageModule } from './modules/aboutpage/aboutpage.module';
+import { ContactPageModule } from './modules/contactpage/contactpage.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AboutPageModule } from './modules/aboutpage/aboutpage.module';
     HomePageModule,
     CarPageModule,
     AboutPageModule,
+    ContactPageModule,
     ProductModule,
     CustomerModule,
   ],
