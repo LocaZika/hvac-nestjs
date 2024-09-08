@@ -8,6 +8,7 @@ import { CustomerModule } from './modules/customer/customer.module';
 import { LayoutModule } from './modules/layout/layout.module';
 import { HomePageModule } from './modules/homepage/homepage.module';
 import { CarPageModule } from './modules/carpage/carpage.module';
+import { AboutPageModule } from './modules/aboutpage/aboutpage.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { CarPageModule } from './modules/carpage/carpage.module';
     LayoutModule,
     HomePageModule,
     CarPageModule,
+    AboutPageModule,
     ProductModule,
     CustomerModule,
   ],
