@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { stringValidator, numberValidator } from 'src/utils/validate.utils';
+import { stringValidator, numberValidator } from '@utils/validate.utils';
 import { ProductDto } from '../dto/product.dto';
 
 export function productValidator(productDto: ProductDto): void {

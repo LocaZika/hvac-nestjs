@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AboutPage } from './entities/aboutpage.entity';
 import { Repository } from 'typeorm';
-import { ResponseData } from 'src/global/responseData';
+import { ResponseData } from '@global/responseData';
 
 @Injectable()
 export class AboutPageService {

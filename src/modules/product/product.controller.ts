@@ -11,7 +11,7 @@ import {
 import { ProductService } from './product.service';
 import { Product } from './entities/product.entity';
 import { ProductDto } from './dto/product.dto';
-import { ResponseData } from 'src/global/responseData';
+import { ResponseData } from '@global/responseData';
 
 @Controller('products')
 export class ProductController {

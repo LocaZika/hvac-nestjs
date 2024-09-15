@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { Customer } from './entities/customer.entity';
 import { CustomerService } from './customer.service';
-import { ResponseData } from 'src/global/responseData';
+import { ResponseData } from '@global/responseData';
 import { CustomerDto } from './dto/customer.dto';
 
 @Controller('users/customers')

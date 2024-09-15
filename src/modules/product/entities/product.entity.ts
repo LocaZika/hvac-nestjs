@@ -1,4 +1,4 @@
-import { getCurrentDate } from 'src/utils/date.utils';
+import { getCurrentDate } from '@utils/date.utils';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 import {
   FuelTypeEnum,

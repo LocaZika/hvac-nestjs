@@ -1,6 +1,6 @@
 import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
 import { HomePageService } from './homepage.service';
-import { ResponseData } from 'src/global/responseData';
+import { ResponseData } from '@global/responseData';
 import { HomePage } from './entities/homepage.entity';
 
 @Controller('homepage')

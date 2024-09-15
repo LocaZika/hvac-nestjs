@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import { ProductDto } from './dto/product.dto';
-import { ResponseData } from 'src/global/responseData';
-import { calTotalPages } from 'src/utils/paginate.utils';
+import { ResponseData } from '@global/responseData';
+import { calTotalPages } from '@utils/paginate.utils';
 import { productValidator } from './validate/product.validate';
 
 @Injectable()

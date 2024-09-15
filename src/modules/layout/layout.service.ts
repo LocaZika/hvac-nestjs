@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Layout } from './entities/layout.entity';
 import { Repository } from 'typeorm';
-import { ResponseData } from 'src/global/responseData';
+import { ResponseData } from '@global/responseData';
 
 @Injectable()
 export class LayoutService {

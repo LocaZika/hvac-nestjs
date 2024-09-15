@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ResponseData } from 'src/global/responseData';
+import { ResponseData } from '@global/responseData';
 import { Repository } from 'typeorm';
 import { HomePage } from './entities/homepage.entity';
 

@@ -1,5 +1,5 @@
 import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
-import { ResponseData } from 'src/global/responseData';
+import { ResponseData } from '@global/responseData';
 import { CarPage } from './entities/carpage.entity';
 import { CarPageService } from './carpage.service';
 

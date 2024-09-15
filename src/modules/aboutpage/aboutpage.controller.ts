@@ -1,6 +1,6 @@
 import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
 import { AboutPageService } from './aboutpage.service';
-import { ResponseData } from 'src/global/responseData';
+import { ResponseData } from '@global/responseData';
 import { AboutPage } from './entities/aboutpage.entity';
 
 @Controller('aboutpage')

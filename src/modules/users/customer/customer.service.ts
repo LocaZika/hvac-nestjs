@@ -6,8 +6,8 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Customer } from './entities/customer.entity';
 import { Repository } from 'typeorm';
-import { ResponseData } from 'src/global/responseData';
-import { calTotalPages } from 'src/utils/paginate.utils';
+import { ResponseData } from '@global/responseData';
+import { calTotalPages } from '@utils/paginate.utils';
 import { CustomerDto } from './dto/customer.dto';
 
 @Injectable()
