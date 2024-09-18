@@ -9,7 +9,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
         console.log('>>Environment: ', configService.get('NODE_ENV'));
-        console.log('>>DB_HOST: ', configService.get('DB_HOST'));
         return {
           type: 'postgres',
           host: configService.get<string>('DB_HOST'),

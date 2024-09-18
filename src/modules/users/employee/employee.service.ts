@@ -9,6 +9,7 @@ import { Employee } from './entities/employee.entity';
 import { ResponseData } from '@global/responseData';
 import { calTotalPages } from '@utils/paginate.utils';
 import { EmployeeDto } from './dto/employee.dto';
+import { hashPassword } from '@/utils/bcrypt.utils';
 
 @Injectable()
 export class EmployeeService {
@@ -40,6 +41,28 @@ export class EmployeeService {
     };
   }
 
+  async findOneByEmail(email: string): Promise<Employee> {
+    const employee = await this.employeeRepository.findOne({
+      select: ['id', 'email', 'address', 'phone', 'name', 'role', 'password'],
+      where: { email },
+    });
+    if (!employee) {
+      throw new NotFoundException('Employee was not found!');
+    }
+    return employee;
+  }
+
+  async findOneByEmailSignin(email: string): Promise<Employee> {
+    const employee = await this.employeeRepository.findOne({
+      select: ['id', 'email', 'password'],
+      where: { email },
+    });
+    if (!employee) {
+      throw new NotFoundException('Employee was not found!');
+    }
+    return employee;
+  }
+
   async create(employeeDto: EmployeeDto): Promise<ResponseData<Employee>> {
     const existEmployeeEmail = await this.employeeRepository.existsBy({
       email: employeeDto.email,
@@ -61,6 +84,8 @@ export class EmployeeService {
     }
     const employee = new Employee();
     Object.assign(employee, employeeDto);
+    const encodedPassword = await hashPassword(employeeDto.password);
+    employee.password = encodedPassword;
     await this.employeeRepository.insert(employee);
     return {
       statusCode: 201,
@@ -87,7 +112,7 @@ export class EmployeeService {
     };
   }
 
-  async delete(id: number): Promise<ResponseData<null>> {
+  async remove(id: number): Promise<ResponseData<null>> {
     const employee = await this.employeeRepository.existsBy({ id });
     if (!employee) {
       throw new NotFoundException('Employee is not found!');

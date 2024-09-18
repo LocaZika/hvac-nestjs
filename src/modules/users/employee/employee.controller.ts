@@ -10,10 +10,12 @@ import { Employee } from './entities/employee.entity';
 import { ResponseData } from '@global/responseData';
 import { EmployeeService } from './employee.service';
 import { EmployeeDto } from './dto/employee.dto';
+import { PublicRoute } from '@/decorators/publicRoute.decorator';
 
 @Controller('users/employees')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
+  @PublicRoute()
   @Get()
   findAll(): Promise<ResponseData<Employee[]>> {
     try {

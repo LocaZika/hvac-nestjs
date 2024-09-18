@@ -40,6 +40,17 @@ export class CustomerService {
     };
   }
 
+  async findOneByEmail(email: string): Promise<Customer> {
+    const customer = await this.customerRepository.findOne({
+      select: ['email', 'address', 'phone', 'name', 'role', 'password'],
+      where: { email },
+    });
+    if (!customer) {
+      throw new NotFoundException('Customer was not found!');
+    }
+    return customer;
+  }
+
   async create(customerDto: CustomerDto): Promise<ResponseData<Customer>> {
     const existedCustomer = await this.customerRepository.existsBy({
       email: customerDto.email,
@@ -57,10 +68,16 @@ export class CustomerService {
   }
 
   async update(id: number): Promise<ResponseData<null>> {
+    if (!id) {
+      throw new NotFoundException();
+    }
     return null;
   }
 
   async remove(id: number): Promise<ResponseData<null>> {
+    if (!id) {
+      throw new NotFoundException();
+    }
     return null;
   }
 }

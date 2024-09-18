@@ -14,8 +14,9 @@
       "@/*": ["src/*"],
       "@modules/*": ["src/modules/*"],
       "@auth/*": ["src/auth/*"],
+      "@database/*": ["src/database/*"],
       "@utils/*": ["src/utils/*"],
-      "@global/*": ["src/global/*"],
+      "@global/*": ["src/global/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
