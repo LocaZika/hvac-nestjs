@@ -1,7 +1,7 @@
 import { getCurrentDate } from '@utils/date.utils';
 import { Column, Entity } from 'typeorm';
 import { AccountTypeEnum } from '../types/customer.enum';
-import { UserEntity } from '@global/userEntity';
+import { UserEntity } from '@userBase/userEntity.base';
 
 @Entity({ schema: 'users', name: 'customers' })
 export class Customer extends UserEntity {

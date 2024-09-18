@@ -16,7 +16,8 @@
       "@auth/*": ["src/auth/*"],
       "@database/*": ["src/database/*"],
       "@utils/*": ["src/utils/*"],
-      "@global/*": ["src/global/*"]
+      "@global/*": ["src/global/*"],
+      "@userBase/*": ["src/modules/users/userBase/*"],
     },
     "incremental": true,
     "skipLibCheck": true,

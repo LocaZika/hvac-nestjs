@@ -10,7 +10,7 @@ import { Employee } from './entities/employee.entity';
 import { ResponseData } from '@global/responseData';
 import { EmployeeService } from './employee.service';
 import { EmployeeDto } from './dto/employee.dto';
-import { PublicRoute } from '@/decorators/publicRoute.decorator';
+import { PublicRoute } from '@/decorators/route.decorator';
 
 @Controller('users/employees')
 export class EmployeeController {

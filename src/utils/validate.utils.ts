@@ -1,4 +1,7 @@
-import { BadRequestException } from '@nestjs/common';
+import { UserEntity } from '@userBase/userEntity.base';
+import { BadRequestException, ConflictException } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { UserDto } from '@/modules/users/userBase/userDto.base';
 
 /**
  * Checks if the value matches the pattern.
@@ -70,5 +73,24 @@ export function numberValidator(
         `Value must be smaller or equal than ${options.smallerOrEqual}`,
       );
     }
+  }
+}
+
+/**
+ * Check if the user existed.
+ * @param userDto Set user dto.
+ * @param repository Set user repository
+ */
+export function checkExistedUser(
+  userDto: UserDto,
+  repository: Repository<UserEntity>,
+): void {
+  const isExistedEmail = repository.existsBy({ email: userDto.email });
+  if (isExistedEmail) {
+    throw new ConflictException("User's email already exists");
+  }
+  const isExistedPhone = repository.existsBy({ phone: userDto.phone });
+  if (isExistedPhone) {
+    throw new ConflictException("User's phone number already exists");
   }
 }

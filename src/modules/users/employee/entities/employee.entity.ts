@@ -1,4 +1,4 @@
-import { UserEntity } from '@global/userEntity';
+import { UserEntity } from '@userBase/userEntity.base';
 import { Entity } from 'typeorm';
 
 @Entity({ schema: 'users', name: 'employees', synchronize: false })

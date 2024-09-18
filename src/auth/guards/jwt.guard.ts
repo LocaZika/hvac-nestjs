@@ -1,4 +1,4 @@
-import { PUBLIC_ROUTE_KEY } from '@/decorators/publicRoute.decorator';
+import { PUBLIC_ROUTE_KEY } from '@/decorators/route.decorator';
 import { Employee } from '@/modules/users/employee/entities/employee.entity';
 import {
   ExecutionContext,

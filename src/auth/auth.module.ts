@@ -8,7 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { EmployeeStrategy } from './passports/employee-local.strategy';
 import { CustomerStrategy } from './passports/customer-local.strategy';
-import { EmployeeJwtStrategy } from './passports/employee-jwt.strategy';
+import { EmployeeJwtStrategy } from './passports/jwt.strategy';
 
 @Module({
   imports: [

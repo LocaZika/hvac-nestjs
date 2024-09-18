@@ -1,5 +1,5 @@
 import { PrimaryColumn, Column } from 'typeorm';
-import { User_Roles } from './role.enum';
+import { User_Roles } from '../../../global/role.enum';
 
 export class UserEntity {
   @PrimaryColumn({ type: 'int', insert: false, update: false })

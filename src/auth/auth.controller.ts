@@ -13,8 +13,8 @@ import { EmployeeLocalGuard } from './guards/employee-local.guard';
 import { AuthService } from './auth.service';
 import { ResponseData } from '@/global/responseData';
 import { IExpressRequest } from './types/userRequest';
-import { EmployeeJwtGuard } from './guards/employee-jwt.guard';
-import { PublicRoute } from '@/decorators/publicRoute.decorator';
+import { EmployeeJwtGuard } from './guards/jwt.guard';
+import { PublicRoute } from '@/decorators/route.decorator';
 
 @Controller('auth')
 export class AuthController {
