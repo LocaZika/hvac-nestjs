@@ -6,7 +6,7 @@ import { ResponseData } from '@/global/responseData';
 import { JwtService } from '@nestjs/jwt';
 import { Customer } from '@/modules/users/customer/entities/customer.entity';
 import { Employee } from '@/modules/users/employee/entities/employee.entity';
-import { UserEntity } from '@/global/userEntity';
+import { UserEntity } from '@userBase/userEntity.base';
 
 @Injectable()
 export class AuthService {

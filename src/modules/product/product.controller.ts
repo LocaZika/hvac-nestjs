@@ -12,11 +12,13 @@ import { ProductService } from './product.service';
 import { Product } from './entities/product.entity';
 import { ProductDto } from './dto/product.dto';
 import { ResponseData } from '@global/responseData';
+import { PublicRoute } from '@/decorators/route.decorator';
 
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @PublicRoute()
   @Get()
   findAll(): Promise<ResponseData<Product[]>> {
     try {
@@ -26,6 +28,7 @@ export class ProductController {
     }
   }
 
+  @PublicRoute()
   @Get(':id')
   findOne(@Param('id') id: number): Promise<ResponseData<Product>> {
     try {

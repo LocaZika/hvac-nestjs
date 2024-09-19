@@ -1,5 +1,5 @@
 import { PUBLIC_ROUTE_KEY } from '@/decorators/route.decorator';
-import { Employee } from '@/modules/users/employee/entities/employee.entity';
+import { UserEntity } from '@/modules/users/userBase/userEntity.base';
 import {
   ExecutionContext,
   Injectable,
@@ -9,7 +9,7 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class EmployeeJwtGuard extends AuthGuard('employeeJwt') {
+export class JwtGuard extends AuthGuard('jwtGuard') {
   constructor(private readonly reflector: Reflector) {
     super();
   }
@@ -25,7 +25,7 @@ export class EmployeeJwtGuard extends AuthGuard('employeeJwt') {
     return super.canActivate(context);
   }
 
-  handleRequest<TUser = Employee>(err: any, user: TUser): TUser {
+  handleRequest<TUser = UserEntity>(err: any, user: TUser): TUser {
     if (err || !user) {
       throw err || new UnauthorizedException('Invalid Access Token!');
     }

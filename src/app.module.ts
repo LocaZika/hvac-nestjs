@@ -15,7 +15,7 @@ import { AuthModule } from '@auth/auth.module';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth/auth.service';
 import { APP_GUARD } from '@nestjs/core';
-import { EmployeeJwtGuard } from './auth/guards/jwt.guard';
+import { JwtGuard } from './auth/guards/jwt.guard';
 
 @Module({
   imports: [
@@ -39,7 +39,7 @@ import { EmployeeJwtGuard } from './auth/guards/jwt.guard';
     AppService,
     AuthService,
     JwtService,
-    { provide: APP_GUARD, useClass: EmployeeJwtGuard },
+    { provide: APP_GUARD, useClass: JwtGuard },
   ],
   exports: [AuthService],
 })
