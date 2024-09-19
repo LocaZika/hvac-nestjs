@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Delete,
   Get,
@@ -10,7 +9,6 @@ import {
 import { Customer } from './entities/customer.entity';
 import { CustomerService } from './customer.service';
 import { ResponseData } from '@global/responseData';
-import { CustomerDto } from './dto/customer.dto';
 
 @Controller('users/customers')
 export class CustomerController {
@@ -29,15 +27,6 @@ export class CustomerController {
   findOne(@Param('id') id: number): Promise<ResponseData<Customer>> {
     try {
       return this.customerService.findOne(id);
-    } catch {
-      throw new InternalServerErrorException();
-    }
-  }
-
-  @Post()
-  create(@Body() customerDto: CustomerDto): Promise<ResponseData<Customer>> {
-    try {
-      return this.customerService.create(customerDto);
     } catch {
       throw new InternalServerErrorException();
     }

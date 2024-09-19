@@ -11,7 +11,13 @@ export class UserDto {
   @IsEmail({}, { message: 'Invalid email address!' })
   email: string;
 
-  @IsStrongPassword({ minUppercase: 0 })
+  @IsStrongPassword({
+    minUppercase: 0,
+    minLength: 8,
+    minLowercase: 3,
+    minNumbers: 0,
+    minSymbols: 0,
+  })
   password: string;
 
   @MinLength(3, { message: 'Name must be at least 3 characters!' })

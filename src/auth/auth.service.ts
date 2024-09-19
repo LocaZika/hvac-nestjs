@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Customer } from '@/modules/users/customer/entities/customer.entity';
 import { Employee } from '@/modules/users/employee/entities/employee.entity';
 import { UserEntity } from '@userBase/userEntity.base';
+import { CustomerDto } from '@/modules/users/customer/dto/customer.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
+  /** EMPLOYEE */
   async employeeSignin(email: string, password: string): Promise<Employee> {
     const employee = await this.employeeService.findOneByEmailSignin(email);
     const isCorrectPassword = await comparePassword(
@@ -29,8 +31,9 @@ export class AuthService {
     return employee;
   }
 
+  /** CUSTOMER */
   async customerSignin(email: string, password: string): Promise<Customer> {
-    const customer = await this.customerService.findOneByEmail(email);
+    const customer = await this.customerService.findOneByEmailSignin(email);
     const isCorrectPassword = await comparePassword(
       password,
       customer.password,
@@ -42,6 +45,13 @@ export class AuthService {
     return customer;
   }
 
+  async customerSignup(
+    customerDto: CustomerDto,
+  ): Promise<ResponseData<Customer>> {
+    return await this.customerService.create(customerDto);
+  }
+
+  /** JWT SERVICE HANDLE */
   async signin(user: UserEntity): Promise<ResponseData<string>> {
     const payload = { id: user.id, email: user.email };
     const access_token = await this.jwtService.signAsync(payload);

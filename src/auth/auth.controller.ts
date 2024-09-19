@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
@@ -15,6 +16,8 @@ import { ResponseData } from '@/global/responseData';
 import { IExpressRequest } from './types/userRequest';
 import { JwtGuard } from './guards/jwt.guard';
 import { PublicRoute } from '@/decorators/route.decorator';
+import { CustomerDto } from '@/modules/users/customer/dto/customer.dto';
+import { Customer } from '@/modules/users/customer/entities/customer.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -50,12 +53,25 @@ export class AuthController {
   /** Customer Auth */
   @UseGuards(CustomerLocalGuard)
   @HttpCode(HttpStatus.OK)
+  @PublicRoute()
   @Post('customer/signin')
-  CustomerSignin(
+  customerSignin(
     @Request() req: IExpressRequest,
   ): Promise<ResponseData<string>> {
     try {
       return this.authService.signin(req.user);
+    } catch {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @PublicRoute()
+  @Post('customer/signup')
+  customerSignup(
+    @Body() customerDto: CustomerDto,
+  ): Promise<ResponseData<Customer>> {
+    try {
+      return this.authService.customerSignup(customerDto);
     } catch {
       throw new InternalServerErrorException();
     }

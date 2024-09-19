@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Employee } from './entities/employee.entity';
@@ -6,7 +10,6 @@ import { ResponseData } from '@global/responseData';
 import { calTotalPages } from '@utils/paginate.utils';
 import { EmployeeDto } from './dto/employee.dto';
 import { hashPassword } from '@/utils/bcrypt.utils';
-import { checkExistedUser } from '@/utils/validate.utils';
 
 @Injectable()
 export class EmployeeService {
@@ -14,6 +17,21 @@ export class EmployeeService {
     @InjectRepository(Employee)
     private readonly employeeRepository: Repository<Employee>,
   ) {}
+
+  checkExistedEmployee(employeeDto: EmployeeDto): void {
+    const isExistedEmail = this.employeeRepository.existsBy({
+      email: employeeDto.email,
+    });
+    if (isExistedEmail) {
+      throw new ConflictException("User's email already exists");
+    }
+    const isExistedPhone = this.employeeRepository.existsBy({
+      phone: employeeDto.phone,
+    });
+    if (isExistedPhone) {
+      throw new ConflictException("User's phone number already exists");
+    }
+  }
 
   async findAll(): Promise<ResponseData<Employee[]>> {
     const employee = await this.employeeRepository.findAndCount({ take: 9 });
@@ -61,12 +79,13 @@ export class EmployeeService {
   }
 
   async create(employeeDto: EmployeeDto): Promise<ResponseData<Employee>> {
-    checkExistedUser(employeeDto, this.employeeRepository);
+    this.checkExistedEmployee(employeeDto);
     const employee = new Employee();
     Object.assign(employee, employeeDto);
     const encodedPassword = await hashPassword(employeeDto.password);
     employee.password = encodedPassword;
     await this.employeeRepository.insert(employee);
+    delete employee.password;
     return {
       statusCode: 201,
       ok: true,
