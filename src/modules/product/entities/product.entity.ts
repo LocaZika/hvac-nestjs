@@ -1,10 +1,10 @@
-import { getCurrentDate } from '@utils/date.utils';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 import {
   FuelTypeEnum,
   TradeTypeEnum,
   TransmissionEnum,
 } from '../types/product.enum';
+import dayjs from 'dayjs';
 
 @Entity({ schema: 'products', name: 'cars', synchronize: false })
 export class Product {
@@ -47,6 +47,6 @@ export class Product {
   @Column({ type: 'jsonb' })
   detailImgs: JSON;
 
-  @Column({ type: 'date', default: getCurrentDate() })
+  @Column({ type: 'date', default: dayjs().toDate() })
   created_at: Date;
 }

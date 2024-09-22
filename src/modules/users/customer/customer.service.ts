@@ -12,13 +12,21 @@ import { CustomerDto } from './dto/customer.dto';
 import { User_Roles } from '../userBase/userRole.enum';
 import { hashPassword } from '@/utils/bcrypt.utils';
 import { v4 as uuid } from 'uuid';
+import { MailerService } from '@nestjs-modules/mailer';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import { currentDate, expireDate } from '@utils/date.utils';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 @Injectable()
 export class CustomerService {
   constructor(
     @InjectRepository(Customer)
     private readonly customerRepository: Repository<Customer>,
+    private readonly mailerService: MailerService,
   ) {}
 
   async checkExistedCustomer(customerDto: CustomerDto): Promise<void> {
@@ -72,30 +80,40 @@ export class CustomerService {
 
   async findOneByEmailSignin(email: string): Promise<Customer> {
     const customer = await this.customerRepository.findOne({
-      select: ['id', 'email', 'password'],
+      select: ['id', 'email', 'password', 'name', 'role', 'is_active'],
       where: { email },
     });
     if (!customer) {
-      throw new NotFoundException('Customer was not found! auth');
+      throw new NotFoundException('Customer was not found!');
     }
     return customer;
   }
 
-  async create(customerDto: CustomerDto): Promise<ResponseData<Customer>> {
+  async create(customerDto: CustomerDto): Promise<ResponseData<CustomerDto>> {
     await this.checkExistedCustomer(customerDto);
     const customer = new Customer();
     Object.assign<Customer, CustomerDto>(customer, customerDto);
     customer.role = User_Roles.customer;
     customer.password = await hashPassword(customerDto.password);
     customer.code_id = uuid();
-    customer.code_expire = dayjs().add(1, 'day').toDate();
-    // customer.account_type
+    customer.code_expire = expireDate.toDate();
     await this.customerRepository.insert(customer);
-    delete customer.password;
+    this.mailerService.sendMail({
+      to: customer.email,
+      subject: 'Activate account at Hvac',
+      template: 'signup/activationAccount.template.hbs',
+      context: {
+        name: customer.name ?? customer.email,
+        activationCode: customer.code_id,
+        mailExpire: expireDate.toString(),
+        sendAt: currentDate(),
+      },
+    });
+    delete customerDto.password;
     return {
       statusCode: 201,
       ok: true,
-      data: customer,
+      data: customerDto,
     };
   }
 

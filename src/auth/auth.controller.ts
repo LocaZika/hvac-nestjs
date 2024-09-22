@@ -17,7 +17,7 @@ import { IExpressRequest } from './types/userRequest';
 import { JwtGuard } from './guards/jwt.guard';
 import { PublicRoute } from '@/decorators/route.decorator';
 import { CustomerDto } from '@/modules/users/customer/dto/customer.dto';
-import { Customer } from '@/modules/users/customer/entities/customer.entity';
+import { ISignInResponse } from '@/modules/users/userBase/userResponse';
 
 @Controller('auth')
 export class AuthController {
@@ -28,9 +28,7 @@ export class AuthController {
   @PublicRoute()
   @HttpCode(HttpStatus.OK)
   @Post('employee/signin')
-  employeeSignin(
-    @Request() req: IExpressRequest,
-  ): Promise<ResponseData<string>> {
+  employeeSignin(@Request() req: IExpressRequest): Promise<ResponseData<any>> {
     try {
       return this.authService.signin(req.user);
     } catch {
@@ -57,7 +55,7 @@ export class AuthController {
   @Post('customer/signin')
   customerSignin(
     @Request() req: IExpressRequest,
-  ): Promise<ResponseData<string>> {
+  ): Promise<ResponseData<ISignInResponse>> {
     try {
       return this.authService.signin(req.user);
     } catch {
@@ -69,7 +67,7 @@ export class AuthController {
   @Post('customer/signup')
   customerSignup(
     @Body() customerDto: CustomerDto,
-  ): Promise<ResponseData<Customer>> {
+  ): Promise<ResponseData<CustomerDto>> {
     try {
       return this.authService.customerSignup(customerDto);
     } catch {

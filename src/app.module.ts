@@ -16,6 +16,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth/auth.service';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from './auth/guards/jwt.guard';
+import { MailerModule } from '@mail/mailer.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { JwtGuard } from './auth/guards/jwt.guard';
     ProductModule,
     CustomerModule,
     EmployeeModule,
+    MailerModule,
   ],
   controllers: [AppController],
   providers: [

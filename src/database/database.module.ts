@@ -7,7 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => {
+      useFactory: async (configService: ConfigService) => {
         console.log('>>Environment: ', configService.get('NODE_ENV'));
         return {
           type: 'postgres',

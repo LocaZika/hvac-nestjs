@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { AuthService } from '../auth.service';
@@ -15,7 +19,10 @@ export class CustomerStrategy extends PassportStrategy(Strategy, 'customer') {
   async validate(email: string, password: string) {
     const customer = await this.authService.customerSignin(email, password);
     if (!customer) {
-      throw new UnauthorizedException("Customer's password wrong!");
+      throw new BadRequestException("Customer's password wrong!");
+    }
+    if (customer.is_active === false) {
+      throw new UnauthorizedException("Customer's account is inactive!");
     }
     return customer;
   }
