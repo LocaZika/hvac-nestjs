@@ -18,6 +18,7 @@ import { JwtGuard } from './guards/jwt.guard';
 import { PublicRoute } from '@/decorators/route.decorator';
 import { CustomerDto } from '@/modules/users/customer/dto/customer.dto';
 import { ISignInResponse } from '@/modules/users/userBase/userResponse';
+import { CustomerVerifyDto } from './dto/customerVerify.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -63,6 +64,8 @@ export class AuthController {
     }
   }
 
+  @UseGuards(CustomerLocalGuard)
+  @HttpCode(HttpStatus.OK)
   @PublicRoute()
   @Post('customer/signup')
   customerSignup(
@@ -70,6 +73,17 @@ export class AuthController {
   ): Promise<ResponseData<CustomerDto>> {
     try {
       return this.authService.customerSignup(customerDto);
+    } catch {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @PublicRoute()
+  @Post('customer/verify')
+  customerVerify(@Body() customerVerifyDto: CustomerVerifyDto) {
+    try {
+      return this.authService.customerVerify(customerVerifyDto);
     } catch {
       throw new InternalServerErrorException();
     }

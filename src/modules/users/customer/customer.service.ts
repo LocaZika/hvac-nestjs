@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -10,13 +11,16 @@ import { ResponseData } from '@global/responseData';
 import { calTotalPages } from '@utils/paginate.utils';
 import { CustomerDto } from './dto/customer.dto';
 import { User_Roles } from '../userBase/userRole.enum';
-import { hashPassword } from '@/utils/bcrypt.utils';
+import { hashPassword } from '@utils/bcrypt.utils';
 import { v4 as uuid } from 'uuid';
 import { MailerService } from '@nestjs-modules/mailer';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { currentDate, expireDate } from '@utils/date.utils';
+import { CustomerVerifyDto } from '@auth/dto/customerVerify.dto';
+import { isExpired } from '@utils/validate.utils';
+import { IVerifyCustomerResponse } from '../userBase/userResponse';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -47,10 +51,10 @@ export class CustomerService {
   async findAll(): Promise<ResponseData<Customer[]>> {
     const customers = await this.customerRepository.findAndCount({ take: 10 });
     return {
-      page: 1,
-      totalPages: calTotalPages(customers[1], 10),
       statusCode: 200,
       ok: true,
+      page: 1,
+      totalPages: calTotalPages(customers[1], 10),
       data: customers[0],
     };
   }
@@ -129,5 +133,38 @@ export class CustomerService {
       throw new NotFoundException();
     }
     return null;
+  }
+
+  async verifyAccount(
+    customerVerifyDto: CustomerVerifyDto,
+  ): Promise<ResponseData<IVerifyCustomerResponse>> {
+    const customer = await this.customerRepository.findOne({
+      select: ['id', 'email', 'is_active', 'code_id', 'code_expire'],
+      where: { email: customerVerifyDto.email, id: customerVerifyDto.id },
+    });
+    if (!customer) {
+      throw new NotFoundException('Customer was not found');
+    }
+    if (customer.is_active) {
+      throw new ConflictException("Customer's account was active");
+    }
+    if (isExpired(customer.code_expire)) {
+      throw new BadRequestException("Customer's activation code is expired");
+    }
+    if (customerVerifyDto.activationCode !== customer.code_id) {
+      throw new BadRequestException("Customer's activation code is incorrect");
+    }
+    await this.customerRepository.update(customerVerifyDto.id, {
+      is_active: true,
+    });
+    return {
+      statusCode: 200,
+      ok: true,
+      data: {
+        id: customer.id,
+        email: customer.email,
+        name: customer.name,
+      },
+    };
   }
 }

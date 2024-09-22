@@ -7,7 +7,11 @@ import { JwtService } from '@nestjs/jwt';
 import { Customer } from '@/modules/users/customer/entities/customer.entity';
 import { Employee } from '@/modules/users/employee/entities/employee.entity';
 import { CustomerDto } from '@/modules/users/customer/dto/customer.dto';
-import { ISignInResponse } from '@/modules/users/userBase/userResponse';
+import {
+  ISignInResponse,
+  IVerifyCustomerResponse,
+} from '@/modules/users/userBase/userResponse';
+import { CustomerVerifyDto } from './dto/customerVerify.dto';
 
 @Injectable()
 export class AuthService {
@@ -49,6 +53,12 @@ export class AuthService {
     customerDto: CustomerDto,
   ): Promise<ResponseData<CustomerDto>> {
     return await this.customerService.create(customerDto);
+  }
+
+  async customerVerify(
+    customerVerifyDto: CustomerVerifyDto,
+  ): Promise<ResponseData<IVerifyCustomerResponse>> {
+    return await this.customerService.verifyAccount(customerVerifyDto);
   }
 
   /** JWT SERVICE HANDLE */

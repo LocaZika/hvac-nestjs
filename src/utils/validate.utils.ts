@@ -1,4 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
+import dayjs from 'dayjs';
 
 /**
  * Checks if the value matches the pattern.
@@ -71,4 +72,8 @@ export function numberValidator(
       );
     }
   }
+}
+
+export function isExpired(value: Date): boolean {
+  return dayjs().isAfter(value) ? true : false;
 }

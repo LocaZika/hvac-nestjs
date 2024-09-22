@@ -27,13 +27,25 @@ const mailExpire = (): TMailExpire => {
   };
 };
 
+/**
+ * Create a expire date
+ */
 const getMailExpire = (): Date =>
   dayjs()
     .add(mailExpire().timeNumber, mailExpire().unit as ManipulateType)
     .toDate();
+
+/**
+ * Create a expire date string
+ */
 const getMailExpireString = (): string =>
   `${mailExpire().timeNumber} ${mailExpire().unit}`;
 
+/**
+ * Expire date
+ * @method toDate()  Get expire date
+ * @method toString() Get expire date string
+ */
 export const expireDate = {
   toDate: getMailExpire,
   toString: getMailExpireString,

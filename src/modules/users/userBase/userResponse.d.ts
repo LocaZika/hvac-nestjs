@@ -5,3 +5,9 @@ interface ISignInResponse {
   user: Partial<Customer & Employee>;
   access_token: string;
 }
+
+interface IVerifyCustomerResponse {
+  id: number;
+  name: string;
+  email: string;
+}

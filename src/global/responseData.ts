@@ -1,4 +1,4 @@
-export abstract class ResponseData<T> {
+export class ResponseData<T> {
   public readonly data: T;
   public readonly message?: string;
   public readonly statusCode?: number;
