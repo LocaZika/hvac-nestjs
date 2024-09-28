@@ -19,12 +19,23 @@ type TMailExpire = {
 
 const mailExpire = (): TMailExpire => {
   const getMailExpire: string = process.env.MAIL_EXPIRE;
-  const unit = timeMap.get(getMailExpire.slice(2, 3));
-  const timeNumber = parseInt(getMailExpire.slice(0, 2));
-  return {
-    unit: unit,
-    timeNumber: timeNumber,
+  const mailExpire = {
+    timeNumber: 30,
+    unit: 'days',
   };
+  if (3 === getMailExpire.length) {
+    const timeNumber = parseInt(getMailExpire.slice(0, 2));
+    const unit = timeMap.get(getMailExpire.slice(2, 3));
+    mailExpire.timeNumber = timeNumber;
+    mailExpire.unit = unit;
+  }
+  if (2 === getMailExpire.length) {
+    const timeNumber = parseInt(getMailExpire.slice(0, 1));
+    const unit = timeMap.get(getMailExpire.slice(1, 2));
+    mailExpire.unit = unit;
+    mailExpire.timeNumber = timeNumber;
+  }
+  return mailExpire;
 };
 
 /**

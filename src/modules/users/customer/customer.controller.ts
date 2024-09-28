@@ -4,7 +4,8 @@ import {
   Get,
   InternalServerErrorException,
   Param,
-  Post,
+  Patch,
+  // Post,
 } from '@nestjs/common';
 import { Customer } from './entities/customer.entity';
 import { CustomerService } from './customer.service';
@@ -32,7 +33,7 @@ export class CustomerController {
     }
   }
 
-  @Post(':id')
+  @Patch(':id')
   update(@Param('id') id: number): Promise<ResponseData<Customer>> {
     try {
       return this.customerService.update(id);

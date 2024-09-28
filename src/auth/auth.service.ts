@@ -56,9 +56,16 @@ export class AuthService {
   }
 
   async customerVerify(
+    id: number,
     customerVerifyDto: CustomerVerifyDto,
   ): Promise<ResponseData<IVerifyCustomerResponse>> {
-    return await this.customerService.verifyAccount(customerVerifyDto);
+    return await this.customerService.verifyAccount(id, customerVerifyDto);
+  }
+
+  async resendActivationCode(
+    email: string,
+  ): Promise<ResponseData<{ id: number }>> {
+    return await this.customerService.resendActivationCode(email);
   }
 
   /** JWT SERVICE HANDLE */

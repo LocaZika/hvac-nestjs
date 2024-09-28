@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  Param,
   Post,
   Request,
   UseGuards,
@@ -17,7 +18,10 @@ import { IExpressRequest } from './types/userRequest';
 import { JwtGuard } from './guards/jwt.guard';
 import { PublicRoute } from '@/decorators/route.decorator';
 import { CustomerDto } from '@/modules/users/customer/dto/customer.dto';
-import { ISignInResponse } from '@/modules/users/userBase/userResponse';
+import {
+  ISignInResponse,
+  IVerifyCustomerResponse,
+} from '@/modules/users/userBase/userResponse';
 import { CustomerVerifyDto } from './dto/customerVerify.dto';
 
 @Controller('auth')
@@ -64,8 +68,7 @@ export class AuthController {
     }
   }
 
-  @UseGuards(CustomerLocalGuard)
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.CREATED)
   @PublicRoute()
   @Post('customer/signup')
   customerSignup(
@@ -80,10 +83,26 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @PublicRoute()
-  @Post('customer/verify')
-  customerVerify(@Body() customerVerifyDto: CustomerVerifyDto) {
+  @Post('customer/verify/:id')
+  customerVerify(
+    @Param('id') id: number,
+    @Body() customerVerifyDto: CustomerVerifyDto,
+  ): Promise<ResponseData<IVerifyCustomerResponse>> {
     try {
-      return this.authService.customerVerify(customerVerifyDto);
+      return this.authService.customerVerify(id, customerVerifyDto);
+    } catch {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @PublicRoute()
+  @Post('customer/resendcode')
+  customerResendCode(
+    @Body('email') email: string,
+  ): Promise<ResponseData<{ id: number }>> {
+    try {
+      return this.authService.resendActivationCode(email);
     } catch {
       throw new InternalServerErrorException();
     }

@@ -136,11 +136,19 @@ export class CustomerService {
   }
 
   async verifyAccount(
+    id: number,
     customerVerifyDto: CustomerVerifyDto,
   ): Promise<ResponseData<IVerifyCustomerResponse>> {
     const customer = await this.customerRepository.findOne({
-      select: ['id', 'email', 'is_active', 'code_id', 'code_expire'],
-      where: { email: customerVerifyDto.email, id: customerVerifyDto.id },
+      select: [
+        'id',
+        'email',
+        'is_active',
+        'code_id',
+        'code_expire',
+        'created_at',
+      ],
+      where: { id },
     });
     if (!customer) {
       throw new NotFoundException('Customer was not found');
@@ -154,9 +162,15 @@ export class CustomerService {
     if (customerVerifyDto.activationCode !== customer.code_id) {
       throw new BadRequestException("Customer's activation code is incorrect");
     }
-    await this.customerRepository.update(customerVerifyDto.id, {
-      is_active: true,
-    });
+    await this.customerRepository.update(
+      {
+        id: customer.id,
+        created_at: customer.created_at,
+      },
+      {
+        is_active: true,
+      },
+    );
     return {
       statusCode: 200,
       ok: true,
@@ -165,6 +179,45 @@ export class CustomerService {
         email: customer.email,
         name: customer.name,
       },
+    };
+  }
+
+  async resendActivationCode(
+    email: string,
+  ): Promise<ResponseData<{ id: number }>> {
+    const customer = await this.customerRepository.findOne({
+      select: ['id', 'created_at', 'name', 'email'],
+      where: { email },
+    });
+    if (!customer) {
+      throw new NotFoundException('Customer was not found');
+    }
+    const activationCode = uuid();
+    await this.customerRepository.update(
+      {
+        id: customer.id,
+        created_at: customer.created_at,
+      },
+      {
+        code_id: activationCode,
+        code_expire: expireDate.toDate(),
+      },
+    );
+    this.mailerService.sendMail({
+      to: customer.email,
+      subject: 'Reactive account at Hvac',
+      template: 'resendCode/resendCode.template.hbs',
+      context: {
+        name: customer.name ?? customer.email,
+        activationCode: activationCode,
+        mailExpire: expireDate.toString(),
+        sendAt: currentDate(),
+      },
+    });
+    return {
+      statusCode: 200,
+      ok: true,
+      data: { id: customer.id },
     };
   }
 }

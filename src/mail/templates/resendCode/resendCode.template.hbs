@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body{
+      background-color: #eaeaea;
+      padding: 30px 0;
+    }
+    hr{
+      border: 1px solid #db2d2e;
+    }
+    .card{
+      margin: 0 auto;
+      width: 70%;
+      background-color: #fff;
+      font-size: 16px;
+      padding: 0 10px;
+    }
+    .card div{
+      padding: 0 10px;
+    }
+    .card div p{
+      margin: 16px 0;
+    }
+    .card .card__header{
+      text-align: right;
+    }
+    .card .card__header img{
+      float: left;
+      object-fit: contain;
+      margin-top: 10px;
+    }
+    .card .card__header p{
+      display: inline-block;
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      font-style: italic;
+      line-height: 60px;
+      color: #db2d2e;
+    }
+    .card .card__body h2{
+      background-color: #db2b2b;
+      padding: 30px 0;
+      border-radius: 10px;
+      text-align: center;
+      color: #fff;
+      margin: 0 30px;
+      font-size: 30px;
+    }
+    .card .card__footer{
+      padding: 0;
+    }
+    .card .card__footer p{
+      text-align: center;
+      color: #a5a5a5;
+      font-style: italic;
+      margin: 5px 0;
+      line-height: 60px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="card__header">
+        <img src="https://preview.colorlib.com/theme/hvac/img/logo.png" alt="hvac-logo">
+        <p>Welcome to Hvac</p>
+      </div>
+      <hr />
+      <div class="card__body">
+        <p style="font-weight: 600">Hello <span style="font-style: italic;">{{name}}</span>.</p>
+        <p>
+          Resend activation code.
+        </p>
+        <p>
+          To activate your account, please use the following activation code:
+        </p>
+        <h2>{{activationCode}}</h2>
+        <p>Please enter this code on the activation page within the next {{mailExpire}}.</p>
+        <p>If you did not register for a Hvac account, please ignore this email.</p>
+        <p>Email sent at: {{sendAt}}</p>
+      </div>
+      <hr />
+      <div class="card__footer">
+        <p>Email was sent by Hvac</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
