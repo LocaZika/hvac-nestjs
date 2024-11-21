@@ -13,7 +13,7 @@ export class ContactPageService {
 
   async findContactpage(): Promise<ResponseData<ContactPage>> {
     const contactPage = await this.contactRepository.query(
-      'SELECT * FROM CONTACTPAGE.GET_CONTACTPAGE()',
+      'SELECT CONTACTPAGE.GET_CONTACTPAGE()',
     );
     return {
       statusCode: 200,

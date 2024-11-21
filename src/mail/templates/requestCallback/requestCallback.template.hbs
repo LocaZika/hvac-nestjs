@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body{
+      background-color: #eaeaea;
+      padding: 30px 0;
+    }
+    hr{
+      border: 1px solid #db2d2e;
+    }
+    .card{
+      margin: 0 auto;
+      width: 70%;
+      background-color: #fff;
+      font-size: 16px;
+      padding: 0 10px;
+    }
+    .card div{
+      padding: 0 10px;
+    }
+    .card div p{
+      margin: 16px 0;
+    }
+    .card .card__header{
+      text-align: right;
+    }
+    .card .card__header img{
+      float: left;
+      object-fit: contain;
+      margin-top: 10px;
+    }
+    .card .card__header p{
+      display: inline-block;
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      font-style: italic;
+      line-height: 60px;
+      color: #db2d2e;
+    }
+    .card .card__body p{
+      margin: 5px 0;
+      font-weight: 600;
+    }
+    .card .card__body p span {
+      font-weight: 400;
+    }
+    .card .card__body .card__body__subject{
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .card .card__footer{
+      padding: 0;
+    }
+    .card .card__footer p{
+      text-align: center;
+      color: #a5a5a5;
+      font-style: italic;
+      margin: 5px 0;
+      line-height: 60px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="card__header">
+        <img src="https://preview.colorlib.com/theme/hvac/img/logo.png" alt="hvac-logo">
+        <p>Request from customer</p>
+      </div>
+      <hr />
+      <div class="card__body">
+        <p class="card__body__subject">
+          Request a callback.
+        </p>
+        <p>From <span style="font-style: italic;">{{name}}</span>.</p>
+        <p>Email: <span>{{email}}</span></p>
+        <p>Phone: <a href="tel:/{{phone}}"><span>{{phone}}</span></a></p>
+        <p>Service: <span>{{service}}</span> </p>
+        <p>Email sent at: {{sendAt}}</p>
+      </div>
+      <hr />
+      <div class="card__footer">
+        <p>Email was sent by Hvac</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

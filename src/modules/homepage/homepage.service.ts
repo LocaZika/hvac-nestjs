@@ -12,7 +12,7 @@ export class HomePageService {
   ) {}
   async findHomePage(): Promise<ResponseData<HomePage>> {
     const homepage = await this.homepageRepository.query(
-      'SELECT * FROM HOMEPAGE.GET_HOMEPAGE()',
+      'SELECT HOMEPAGE.GET_HOMEPAGE()',
     );
     return {
       statusCode: 200,

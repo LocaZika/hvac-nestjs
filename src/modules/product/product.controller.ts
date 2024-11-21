@@ -7,12 +7,16 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Product } from './entities/product.entity';
 import { ProductDto } from './dto/product.dto';
 import { ResponseData } from '@global/responseData';
 import { PublicRoute } from '@/decorators/route.decorator';
+import { ProductSortByEnum } from './types/product.enum';
+import { ProductFilterQuery } from './dto/productQuery.dto';
+import { RawData } from '@/global/rawData';
 
 @Controller('products')
 export class ProductController {
@@ -20,9 +24,12 @@ export class ProductController {
 
   @PublicRoute()
   @Get()
-  findAll(): Promise<ResponseData<Product[]>> {
+  findAll(
+    @Query('page') page: string,
+    @Query('sortBy') sortBy: ProductSortByEnum,
+  ): Promise<ResponseData<Product[]>> {
     try {
-      return this.productService.findAll();
+      return this.productService.findAll(page, sortBy);
     } catch {
       throw new InternalServerErrorException('Internal Server Error!');
     }
@@ -30,9 +37,35 @@ export class ProductController {
 
   @PublicRoute()
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<ResponseData<Product>> {
+  findOne(@Param('id') id: number): Promise<ResponseData<RawData>> {
     try {
       return this.productService.findOne(id);
+    } catch {
+      throw new InternalServerErrorException('Internal Server Error!');
+    }
+  }
+
+  @PublicRoute()
+  @Get('search')
+  findBySearchQuery(
+    @Query('q') q: string,
+    @Query('page') page: string,
+    @Query('sortBy') sortBy: ProductSortByEnum,
+  ): Promise<ResponseData<Product[]>> {
+    try {
+      return this.productService.findBySearchQuery(q, page, sortBy);
+    } catch {
+      throw new InternalServerErrorException('Internal Server Error!');
+    }
+  }
+
+  @PublicRoute()
+  @Get('filter')
+  findByFilterQuery(
+    @Query() productFilterQuery: ProductFilterQuery,
+  ): Promise<ResponseData<Product[]>> {
+    try {
+      return this.productService.findByFilterQuery(productFilterQuery);
     } catch {
       throw new InternalServerErrorException('Internal Server Error!');
     }

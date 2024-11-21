@@ -12,3 +12,9 @@ export enum FuelTypeEnum {
   electric = 'electric',
   mixed = 'mixed',
 }
+export enum ProductSortByEnum {
+  ascending = 'ascending',
+  descending = 'descending',
+  asc = 'asc',
+  desc = 'desc',
+}

@@ -13,7 +13,7 @@ export class AboutPageService {
 
   async findAboutPage(): Promise<ResponseData<AboutPage>> {
     const aboutpage = await this.aboutpageRepository.query(
-      'SELECT * FROM ABOUTPAGE.GET_ABOUTPAGE()',
+      'SELECT ABOUTPAGE.GET_ABOUTPAGE()',
     );
     return {
       statusCode: 200,

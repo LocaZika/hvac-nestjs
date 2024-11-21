@@ -13,14 +13,14 @@ import { CustomerDto } from './dto/customer.dto';
 import { User_Roles } from '../userBase/userRole.enum';
 import { hashPassword } from '@utils/bcrypt.utils';
 import { v4 as uuid } from 'uuid';
-import { MailerService } from '@nestjs-modules/mailer';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import { currentDate, expireDate } from '@utils/date.utils';
+import { expireDate } from '@utils/date.utils';
 import { CustomerVerifyDto } from '@auth/dto/customerVerify.dto';
 import { isExpired } from '@utils/validate.utils';
 import { IVerifyCustomerResponse } from '../userBase/userResponse';
+import { MailerService } from '@/mail/mailer.service';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -102,16 +102,10 @@ export class CustomerService {
     customer.code_id = uuid();
     customer.code_expire = expireDate.toDate();
     await this.customerRepository.insert(customer);
-    this.mailerService.sendMail({
-      to: customer.email,
-      subject: 'Activate account at Hvac',
-      template: 'signup/activationAccount.template.hbs',
-      context: {
-        name: customer.name ?? customer.email,
-        activationCode: customer.code_id,
-        mailExpire: expireDate.toString(),
-        sendAt: currentDate(),
-      },
+    this.mailerService.sendActivationCode({
+      name: customer.name,
+      email: customer.email,
+      activationCode: customer.code_id,
     });
     delete customerDto.password;
     return {
@@ -203,16 +197,10 @@ export class CustomerService {
         code_expire: expireDate.toDate(),
       },
     );
-    this.mailerService.sendMail({
-      to: customer.email,
-      subject: 'Reactive account at Hvac',
-      template: 'resendCode/resendCode.template.hbs',
-      context: {
-        name: customer.name ?? customer.email,
-        activationCode: activationCode,
-        mailExpire: expireDate.toString(),
-        sendAt: currentDate(),
-      },
+    this.mailerService.resendActivationCode({
+      name: customer.name,
+      email: customer.email,
+      activationCode,
     });
     return {
       statusCode: 200,

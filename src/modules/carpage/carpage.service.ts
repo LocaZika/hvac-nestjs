@@ -13,7 +13,7 @@ export class CarPageService {
 
   async findCarpage(): Promise<ResponseData<CarPage>> {
     const carpage = await this.carpageRepository.query(
-      'SELECT * FROM CARPAGE.GET_CARPAGE()',
+      'SELECT CARPAGE.GET_CARPAGE()',
     );
     return {
       statusCode: 200,
