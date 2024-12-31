@@ -1,13 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
-import { ILike, Repository } from 'typeorm';
+import { FindManyOptions, ILike, Repository } from 'typeorm';
 import { ProductDto } from './dto/product.dto';
 import { ResponseData } from '@global/responseData';
 import { calTotalPages } from '@utils/paginate.utils';
 import { productValidator } from './validate/product.validate';
-import { ProductSortByEnum } from './types/product.enum';
-import { ProductFilterQuery } from './dto/productQuery.dto';
+import { ProductQuery } from './dto/productQuery.dto';
 import { getOrderByPrice } from '@/utils/orderByPrice.utils';
 import { Discount } from './entities/discount.entity';
 import { RawData } from '@/global/rawData';
@@ -20,15 +19,11 @@ export class ProductService {
     @InjectRepository(Discount)
     private readonly discountRepository: Repository<Discount>,
   ) {}
-  async findAll(
-    page: string,
-    sortBy: string,
-  ): Promise<ResponseData<Product[]>> {
-    let orderByPrice: ProductSortByEnum = ProductSortByEnum.asc;
-    if (ProductSortByEnum.descending === sortBy) {
-      orderByPrice = ProductSortByEnum.desc;
-    }
-    const products = await this.productRepository.findAndCount({
+
+  async findAll(productQuery: ProductQuery): Promise<ResponseData<Product[]>> {
+    const { page, sortBy, brand, model, q, transmission, type } = productQuery;
+    const orderByPrice = getOrderByPrice(sortBy);
+    const options: FindManyOptions<Product> = {
       select: [
         'id',
         'name',
@@ -46,7 +41,32 @@ export class ProductService {
       order: { price: orderByPrice },
       take: 9,
       skip: 9 * (+page - 1),
-    });
+    };
+    const searchOrFilter = q || brand || transmission || model || type;
+    if (searchOrFilter) {
+      options.where = {};
+
+      if (q) {
+        options.where.name = ILike(`%${q}%`);
+      }
+
+      if (brand) {
+        options.where.brand = brand;
+      }
+
+      if (transmission) {
+        options.where.transmission = transmission;
+      }
+
+      if (type) {
+        options.where.type = type;
+      }
+
+      if (model) {
+        options.where.model = parseInt(model);
+      }
+    }
+    const products = await this.productRepository.findAndCount(options);
     return {
       page: +page,
       totalPages: calTotalPages(products[1], 9),
@@ -88,90 +108,6 @@ export class ProductService {
       statusCode: 200,
       ok: true,
       data,
-    };
-  }
-
-  async findBySearchQuery(
-    name: string,
-    page: string,
-    sortBy: ProductSortByEnum,
-  ): Promise<ResponseData<Product[]>> {
-    const orderByPrice = getOrderByPrice(sortBy);
-    const products = await this.productRepository.findAndCount({
-      select: [
-        'id',
-        'name',
-        'brand',
-        'price',
-        'tradeType',
-        'fuelType',
-        'hp',
-        'mileage',
-        'transmission',
-        'type',
-        'model',
-        'imgs',
-      ],
-      where: [{ name: ILike(`%${name}%`) }, { brand: ILike(`%${name}%`) }],
-      order: { price: orderByPrice },
-      take: 9,
-      skip: 9 * (+page - 1),
-    });
-    return {
-      statusCode: 200,
-      ok: true,
-      page: +page,
-      totalPages: calTotalPages(products[1], 9),
-      data: products[0],
-    };
-  }
-
-  async findByFilterQuery(
-    productFilterQuery: ProductFilterQuery,
-  ): Promise<ResponseData<Product[]>> {
-    const {
-      page,
-      sortBy,
-      brand,
-      mileage,
-      model,
-      transmission,
-      type,
-      priceRange,
-    } = productFilterQuery;
-    const orderByPrice = getOrderByPrice(sortBy);
-    const products = await this.productRepository.findAndCount({
-      select: [
-        'id',
-        'name',
-        'brand',
-        'price',
-        'tradeType',
-        'fuelType',
-        'hp',
-        'mileage',
-        'transmission',
-        'type',
-        'model',
-        'imgs',
-      ],
-      where: {
-        brand: brand ?? null,
-        transmission: transmission ?? null,
-        type: type ?? null,
-        ...(model ? { model: parseInt(model) } : null),
-        ...(mileage ? { mileage: parseInt(mileage) } : null),
-      },
-      order: { price: orderByPrice },
-      take: 9,
-      skip: 9 * (+page - 1),
-    });
-    return {
-      statusCode: 200,
-      ok: true,
-      page: +page,
-      totalPages: calTotalPages(products[1], 9),
-      data: products[0],
     };
   }
 
